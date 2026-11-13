@@ -1,0 +1,19 @@
+{
+  "name": "宋词雅集",
+  "short_name": "宋词",
+  "description": "全宋词阅读：竖排右起、逐句浮现，可添加自己的词作。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5efe2",
+  "theme_color": "#f5efe2",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="96" fill="#96392b"/>
+  <rect x="40" y="40" width="432" height="432" rx="64" fill="none" stroke="#f5efe2" stroke-opacity="0.55" stroke-width="6"/>
+  <text x="256" y="276" text-anchor="middle" dominant-baseline="middle"
+        font-family="Songti SC, STSong, Noto Serif CJK SC, serif" font-size="248"
+        fill="#f7f1e2">詞</text>
+</svg>

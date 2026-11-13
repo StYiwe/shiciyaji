@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5efe2">
+<title>诗词雅集</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="stylesheet" href="assets/style.css?v=20261113k">
+</head>
+<body class="theme-paper">
+
+<div class="paper-grain" aria-hidden="true"></div>
+
+<header id="topbar">
+  <button class="brand" id="btn-home" title="目录">
+    <span class="seal">詞</span>
+    <span class="brand-text">诗词雅集</span>
+  </button>
+  <nav class="tools">
+    <button class="tool" id="btn-library" title="目录">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h10"/></svg>
+      <span>目录</span>
+    </button>
+    <button class="tool" id="btn-random" title="随机一首">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h4l8 10h4M4 17h4l8-10h4M18 4l2 3-2 3M18 14l2 3-2 3"/></svg>
+      <span>随机</span>
+    </button>
+    <button class="tool" id="btn-add" title="添加诗词">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      <span>添加</span>
+    </button>
+    <button class="tool" id="btn-script" title="切换简繁"><span>繁體</span></button>
+    <button class="tool" id="btn-settings" title="设置">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6"/></svg>
+      <span>设置</span>
+    </button>
+  </nav>
+</header>
+
+<main id="reader" aria-live="polite">
+  <article id="poem" class="poem vertical">
+    <div class="poem-lines" id="poem-lines"></div>
+    <div class="poem-meta" id="poem-meta">
+      <span class="rhythmic unit" id="meta-title"></span>
+      <button class="author unit" id="meta-author" title="查看作者"></button>
+    </div>
+  </article>
+  <div id="hint" class="hint"></div>
+</main>
+
+<footer id="pager">
+  <button class="nav-btn" id="btn-prev" title="上一首">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <div class="pos-wrap">
+    <span id="pos-info">—</span>
+  </div>
+  <button class="nav-btn" id="btn-next" title="下一首">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <span class="pager-divider"></span>
+  <button class="ghost-btn" id="btn-fav" title="收藏">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6l2.5 5.1 5.6.8-4 4 1 5.6-5.1-2.7-5.1 2.7 1-5.6-4-4 5.6-.8z"/></svg>
+    <span>收藏</span>
+  </button>
+</footer>
+
+<div id="scrim" class="scrim" hidden></div>
+
+<aside id="panel" class="panel" aria-hidden="true">
+  <div class="panel-head">
+    <button id="panel-back" class="icon-btn back hidden" title="返回">‹</button>
+    <h2 id="panel-title">目录</h2>
+    <button id="panel-close" class="icon-btn close" title="关闭">✕</button>
+  </div>
+
+  <div class="panel-body">
+
+    <!-- 目录 -->
+    <section id="view-library" class="panel-view">
+      <div class="library-head">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
+          <input id="search-input" type="search" placeholder="搜索词牌、作者或词句…" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="tabs" id="library-tabs">
+          <button class="tab active" data-tab="all">全部</button>
+          <button class="tab" data-tab="song">宋词</button>
+          <button class="tab" data-tab="cipai">词牌</button>
+          <button class="tab" data-tab="tang">唐诗</button>
+          <button class="tab" data-tab="wudai">五代词</button>
+          <button class="tab" data-tab="hanjin">汉魏晋</button>
+          <button class="tab" data-tab="mao">毛词</button>
+          <button class="tab" data-tab="author">作者</button>
+          <button class="tab" data-tab="fav">收藏</button>
+          <button class="tab" data-tab="mine">我的</button>
+        </div>
+      </div>
+      <div id="lib-list" class="list"></div>
+      <div class="more-wrap">
+        <button id="load-more" class="ghost-btn" hidden>加载更多</button>
+      </div>
+    </section>
+
+    <!-- 作者详情 -->
+    <section id="view-author" class="panel-view hidden">
+      <div class="author-card">
+        <div class="author-name" id="author-name"></div>
+        <div class="author-sub" id="author-sub"></div>
+        <div class="author-desc" id="author-desc"></div>
+      </div>
+      <div class="section-label">收录作品</div>
+      <div id="author-works" class="list"></div>
+    </section>
+
+    <!-- 设置 -->
+    <section id="view-settings" class="panel-view hidden">
+      <div class="setting-group">
+        <div class="setting-label">版式</div>
+        <div class="segmented" data-key="vertical">
+          <button data-value="true">竖排</button>
+          <button data-value="false">横排</button>
+        </div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">阅读方向</div>
+        <div class="segmented" data-key="rtl">
+          <button data-value="true">从右到左</button>
+          <button data-value="false">从左到右</button>
+        </div>
+        <p class="setting-tip" id="direction-tip"></p>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">显现方式</div>
+        <div class="segmented" data-key="anim">
+          <button data-value="line">逐句淡入</button>
+          <button data-value="char">逐字浮现</button>
+          <button data-value="all">一览无余</button>
+        </div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">速度</div>
+        <div class="segmented" data-key="speed">
+          <button data-value="slow">慢</button>
+          <button data-value="normal">适中</button>
+          <button data-value="fast">快</button>
+        </div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">字号</div>
+        <div class="segmented" data-key="size">
+          <button data-value="0.88">小</button>
+          <button data-value="1">标准</button>
+          <button data-value="1.14">大</button>
+        </div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">底色</div>
+        <div class="segmented wrap" data-key="theme">
+          <button data-value="paper">宣纸</button>
+          <button data-value="plain">素白</button>
+          <button data-value="celadon">青瓷</button>
+          <button data-value="lotus">藕荷</button>
+          <button data-value="night">夜读</button>
+          <button data-value="auto">跟随系统</button>
+        </div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">字体</div>
+        <div class="segmented" data-key="font">
+          <button data-value="song">宋体</button>
+          <button data-value="kai">楷体</button>
+          <button data-value="xing">行楷</button>
+          <button data-value="fang">仿宋</button>
+        </div>
+      </div>
+      <p class="setting-hint">轻点词文可暂停 / 继续。</p>
+    </section>
+
+    <!-- 添加 / 编辑 -->
+    <section id="view-editor" class="panel-view hidden">
+      <label class="field">
+        <span>词牌</span>
+        <input id="edit-title" type="text" placeholder="如：水调歌头" maxlength="40">
+      </label>
+      <label class="field">
+        <span>作者</span>
+        <input id="edit-author" type="text" placeholder="如：苏轼" maxlength="30">
+      </label>
+      <label class="field">
+        <span>词文（每句一行）</span>
+        <textarea id="edit-content" rows="10" placeholder="明月几时有？把酒问青天。&#10;不知天上宫阙，今夕是何年。"></textarea>
+      </label>
+      <div class="editor-actions">
+        <button id="btn-save" class="primary-btn">保存</button>
+        <button id="btn-delete" class="ghost-btn danger" hidden>删除</button>
+      </div>
+    </section>
+
+  </div>
+</aside>
+
+<script src="data/authors.js?v=20261113k"></script>
+<script src="data/poems.js?v=20261113k"></script>
+<script src="assets/vendor/opencc-full.js?v=20261113k"></script>
+<script src="assets/app.js?v=20261113k"></script>
+</body>
+</html>
